@@ -10,7 +10,7 @@ const UserController = {
     const { email, password, name } = req.body;
 
     if (!email || !password || !name) {
-      return res.status(400).json({ msg: "Все поля обязательны" });
+      return res.status(400).json({ msg: "Все поля обязательны!" });
     }
     try {
       const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -43,11 +43,11 @@ const UserController = {
       return res.status(500).json({ error: "Internal Server Error" });
     }
   },
-  login: async (req, res) => {
+  async login(req, res) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ msg: "Все поля обязательны" });
+      return res.status(400).json({ msg: "Все поля обязательны!" });
     }
 
     try {
@@ -71,7 +71,7 @@ const UserController = {
       res.status(500).json({ error: "Internal server error" });
     }
   },
-  getUserById: async (req, res) => {
+  async getUserById(req, res) {
     const { id } = req.params;
     const userId = req.user.userId;
 
@@ -101,7 +101,7 @@ const UserController = {
       res.status(500).json({ error: "Internal server error" });
     }
   },
-  updateUser: async (req, res) => {
+  async updateUser(req, res) {
     const { id } = req.params;
     const { email, name, dateOfBirth, bio, location } = req.body;
 
@@ -142,7 +142,7 @@ const UserController = {
       res.status(500).json({ error: "Internal server error" });
     }
   },
-  current: async (req, res) => {
+  async current(req, res) {
     try {
       const user = await prisma.user.findUnique({
         where: { id: req.user.userId },
