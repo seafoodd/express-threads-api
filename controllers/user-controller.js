@@ -10,7 +10,7 @@ const UserController = {
     const { email, password, name } = req.body;
 
     if (!email || !password || !name) {
-      return res.status(400).json({ msg: "Все поля обязательны!" });
+      return res.status(400).json({ error: "Все поля обязательны!" });
     }
     try {
       const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -18,7 +18,7 @@ const UserController = {
       if (existingUser) {
         return res
           .status(400)
-          .json({ msg: "Пользователь с таким email уже существует" });
+          .json({ error: "Пользователь с таким email уже существует" });
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -47,20 +47,20 @@ const UserController = {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ msg: "Все поля обязательны!" });
+      return res.status(400).json({ error: "Все поля обязательны!" });
     }
 
     try {
       const user = await prisma.user.findUnique({ where: { email } });
 
       if (!user) {
-        return res.status(400).json({ msg: "Неверный логин или пароль" });
+        return res.status(400).json({ error: "Неверный логин или пароль" });
       }
 
       const valid = await bcrypt.compare(password, user.password);
 
       if (!valid) {
-        return res.status(400).json({ msg: "Неверный логин или пароль" });
+        return res.status(400).json({ error: "Неверный логин или пароль" });
       }
 
       const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY);

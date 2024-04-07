@@ -6,7 +6,7 @@ const FollowController = {
     const userId = req.user.userId;
 
     if (!userId || !followingId) {
-      return res.status(400).json({ msg: "Все поля обязательны!" });
+      return res.status(400).json({ error: "Все поля обязательны!" });
     }
 
     if (followingId === userId) {
